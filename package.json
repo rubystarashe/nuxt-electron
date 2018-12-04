@@ -1,0 +1,30 @@
+{
+  "name": "nuxt-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "nuxt generate",
+    "start": "npm run generate && electron .",
+    "pack": "npm run generate && electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "Rubystar Ashe <rubystarashe@gmail.com> (https://github.io/rubystarashe)",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^3.0.10",
+    "electron-builder": "^20.38.2",
+    "nuxt": "^2.3.4"
+  },
+  "build": {
+    "appId": "com.exam.exam-electron",
+    "mac": {
+      "category": "public.app-category.graphics-design"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}
