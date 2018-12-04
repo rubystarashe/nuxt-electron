@@ -9,5 +9,15 @@ module.exports = {
   },
   generate: {
     dir: 'web'
-  }
+  },
+  build: {
+    extend(config, ctx) {
+      if (ctx.isClient) {
+				config.target = 'electron-renderer'
+			}
+    }
+  },
+  plugins: [
+    '~plugins/vue-electron.js'
+  ]
 }
