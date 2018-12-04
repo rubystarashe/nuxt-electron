@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "cross-env NODE_ENV=DEV electron .",
     "generate": "nuxt generate",
     "start": "npm run generate && electron .",
     "pack": "npm run generate && electron-builder --dir",
@@ -14,7 +15,8 @@
   "devDependencies": {
     "electron": "^3.0.10",
     "electron-builder": "^20.38.2",
-    "nuxt": "^2.3.4"
+    "nuxt": "^2.3.4",
+    "vue-devtools": "^5.0.0-beta.1"
   },
   "build": {
     "appId": "com.exam.exam-electron",
