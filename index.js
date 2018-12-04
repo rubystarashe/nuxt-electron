@@ -24,10 +24,10 @@ const createWindow = () => {
     const PROTOCOL = 'file'
   
     protocol.interceptFileProtocol(PROTOCOL, (req, cb) => {
-        let url = req.url.substr(PROTOCOL.length + 1)
-        url = path.join(__dirname, WEB_FOLDER, url)
-        url = path.normalize(url)
-        cb({ path: url })
+      let url = req.url.substr(PROTOCOL.length + 1)
+      url = path.join(__dirname, WEB_FOLDER, url)
+      url = path.normalize(url)
+      cb({ path: url })
     })
 
     mainWindow.loadURL(url.format({
