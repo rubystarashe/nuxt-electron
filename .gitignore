@@ -78,3 +78,4 @@ typings/
 # for electron static web file output
 web
 dist
+package-lock.json
