@@ -14,10 +14,10 @@
   "author": "Rubystar Ashe <rubystarashe@gmail.com> (https://github.io/rubystarashe)",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^3.1.3",
-    "electron-builder": "^20.38.2",
+    "electron": "^3.1.7",
+    "electron-builder": "^20.39.0",
     "electron-rebuild": "^1.8.2",
-    "nuxt": "^2.4.3",
+    "nuxt": "^2.5.1",
     "vue-devtools": "^5.0.0-beta.1"
   },
   "build": {
