@@ -18,5 +18,16 @@
     "electron-builder": "^20.38.2",
     "nuxt": "^2.6.3",
     "vue-devtools": "^5.0.0-beta.1"
+  },
+  "build": {
+    "appId": "com.exam.exam-electron",
+    "mac": {
+      "category": "public.app-category.graphics-design"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
   }
 }
