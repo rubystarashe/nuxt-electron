@@ -3,9 +3,29 @@ const url = require('url')
 const { app, BrowserWindow, protocol } = require('electron')
 const isDev = process.env.NODE_ENV === 'DEV'
 
-let mainWindow
+const WEB_FOLDER = 'web'
+const PROTOCOL = 'file'
+let devUri
 
-const createWindow = () => {
+app.on('ready', async () => {
+  if (isDev) {
+    require('vue-devtools').install()
+    devUri = await require('./dev')
+  }
+  else {
+    protocol.interceptFileProtocol(PROTOCOL, (req, cb) => {
+      let url = req.url.substr(PROTOCOL.length + 1)
+      url = path.join(__dirname, WEB_FOLDER, url)
+      url = path.normalize(url)
+      cb({ path: url })
+    })
+  }
+
+  createMainWindow()
+})
+
+let mainWindow
+const createMainWindow = () => {
   mainWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true
@@ -16,23 +36,9 @@ const createWindow = () => {
   })
 
   if (isDev) {
-    (async () => {
-      require('vue-devtools').install()
-      const devUri = await require('./dev')
-      mainWindow.loadURL(devUri)
-    })()
+    mainWindow.loadURL(devUri)
   }
   else {
-    const WEB_FOLDER = 'web'
-    const PROTOCOL = 'file'
-  
-    protocol.interceptFileProtocol(PROTOCOL, (req, cb) => {
-      let url = req.url.substr(PROTOCOL.length + 1)
-      url = path.join(__dirname, WEB_FOLDER, url)
-      url = path.normalize(url)
-      cb({ path: url })
-    })
-
     mainWindow.loadURL(url.format({
       pathname: 'index.html',
       protocol: PROTOCOL + ':',
@@ -49,8 +55,6 @@ const createWindow = () => {
     mainWindow = null
   })
 }
-
-app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
