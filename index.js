@@ -9,7 +9,7 @@ let devUri
 
 app.on('ready', async () => {
   if (isDev) {
-    require('vue-devtools').install()
+    await require('vue-devtools').install()
     devUri = await require('./dev')
   }
   else {
