@@ -8,15 +8,20 @@
     "generate": "nuxt generate",
     "start": "npm run generate && electron .",
     "pack": "npm run generate && electron-builder --dir",
-    "dist": "electron-builder",
-    "rebuild": "./node_modules/.bin/electron-rebuild"
+    "dist": "npm run generate && electron-builder",
+    "rebuild": "./node_modules/.bin/electron-rebuild",
+    "sass-rebuild": "./node_modules/.bin/electron-rebuild -o node-sass && node sass-rebuild"
   },
   "author": "Rubystar Ashe <rubystarashe@gmail.com> (https://github.io/rubystarashe)",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^7.1.2",
-    "electron-builder": "^22.2.0",
-    "nuxt": "^2.10.2",
+    "core-js": "^2.6.11",
+    "electron": "^8.0.3",
+    "electron-builder": "^22.3.2",
+    "electron-rebuild": "^1.10.1",
+    "node-sass": "^4.13.1",
+    "nuxt": "^2.11.0",
+    "sass-loader": "^8.0.2",
     "vue-devtools": "^5.1.3"
   },
   "build": {

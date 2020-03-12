@@ -1,6 +1,6 @@
 const path = require('path')
 const url = require('url')
-const { app, BrowserWindow, protocol } = require('electron')
+const { app, BrowserWindow, protocol, ipcMain, dialog } = require('electron')
 const isDev = process.env.NODE_ENV === 'DEV'
 
 const WEB_FOLDER = 'web'
@@ -23,10 +23,22 @@ app.on('ready', async () => {
 
   createMainWindow()
 })
+app.allowRendererProcessReuse = true
+app.setAppUserModelId('nuxt-electron-example')
 
-let mainWindow
+app.ipcMain = ipcMain
+app.dialog = dialog
+app.process = process
+app.isDev = isDev
+
+app.windows = {
+  mainWindow: null
+}
+
+require('./ipc')(app)
+
 const createMainWindow = () => {
-  mainWindow = new BrowserWindow({
+  app.windows.mainWindow = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true
     },
@@ -36,23 +48,40 @@ const createMainWindow = () => {
   })
 
   if (isDev) {
-    mainWindow.loadURL(devUri)
+    app.windows.mainWindow.loadURL(devUri)
   }
   else {
-    mainWindow.loadURL(url.format({
+    app.windows.mainWindow.loadURL(url.format({
       pathname: 'index.html',
       protocol: PROTOCOL + ':',
       slashes: true
     }))
   }
 
-  mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
-    if (isDev) mainWindow.webContents.openDevTools()
+  app.windows.mainWindow.on('ready-to-show', () => {
+    app.windows.mainWindow.show()
+    if (isDev) {
+      const devtools = new BrowserWindow()
+      app.windows.mainWindow.webContents.setDevToolsWebContents(devtools.webContents)
+      app.windows.mainWindow.webContents.openDevTools({ mode: 'detach' })
+    }
   })
 
-  mainWindow.on('closed', () => {
-    mainWindow = null
+  app.windows.mainWindow.on('closed', () => {
+    app.windows.mainWindow = null
+  })
+}
+
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    if (app.windows.mainWindow) {
+      if (app.windows.mainWindow.isMinimized()) app.windows.mainWindow.restore()
+      app.windows.mainWindow.show()
+      app.windows.mainWindow.focus()
+    }
   })
 }
 
@@ -63,7 +92,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  if (mainWindow === null) {
+  if (app.windows.mainWindow === null) {
     createWindow()
   }
 })
