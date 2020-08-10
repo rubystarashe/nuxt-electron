@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const version = '76'
+const version = '80'
 
 fs.mkdir(`./node_modules/node-sass/vendor/win32-x64-${version}/`, () => {
   fs.copyFile('./node_modules/node-sass/build/Release/binding.node',
