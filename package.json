@@ -32,6 +32,13 @@
       "target": [
         "nsis"
       ]
-    }
+    },
+    "files": [
+      "**/*",
+      {
+        "from": "web/_nuxt/node_modules",
+        "to": "web/_nuxt/node_modules"
+      }
+    ]
   }
 }
