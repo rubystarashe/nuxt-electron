@@ -60,9 +60,9 @@ const createMainWindow = () => {
 
   app.windows.mainWindow.on('ready-to-show', () => {
     app.windows.mainWindow.show()
-    if (isDev) {
-      const devtools = new BrowserWindow()
-      app.windows.mainWindow.webContents.setDevToolsWebContents(devtools.webContents)
+    if (isDev && !app.windows.mainWindow.devtools) {
+      app.windows.mainWindow.devtools = new BrowserWindow()
+      app.windows.mainWindow.webContents.setDevToolsWebContents(app.windows.mainWindow.devtools.webContents)
       app.windows.mainWindow.webContents.openDevTools({ mode: 'detach' })
     }
   })
@@ -93,6 +93,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (app.windows.mainWindow === null) {
-    createWindow()
+    createMainWindow()
   }
 })

@@ -1,6 +1,6 @@
 module.exports = {
   dev: process.env.NODE_ENV === 'DEV',
-  mode: 'spa',
+  ssr: false,
   router: {
     mode: 'hash'
   },
